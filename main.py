@@ -21,7 +21,7 @@ def playing_area():
     t.goto(-240, 240)
     t.end_fill()
 # Function 1: Movement using turtle heading (forward + setheading)
-def move_with_heading(t):
+def move_with_heading(t, turtles):
     # Move the turtle continuously using forward movement and its current heading.
     # The turtle should update its position each frame using forward().
     # When the turtle hits a boundary:
@@ -34,12 +34,12 @@ def move_with_heading(t):
     if t.xcor() > 240 or t.xcor() < -240:
         t.setheading(180 - t.heading())
         t.forward(10)
-        t_count + 1
+        turtles.append(new_turt())
     elif t.ycor() >240 or t.ycor() < -240:
         t.setheading(-(t.heading()))
         t.forward(10)
-        t_count + 1
-    
+        turtles.append(new_turt())
+    return turtles
 
 
 # Function 2: Movement using delta x / delta y (coordinate-based movement)
@@ -66,8 +66,13 @@ def move_with_deltas(t, deltax, deltay):
     t.goto(newX, newY)
     return deltax, deltay
 
-
-
+def new_turt():
+    turt = Turtle()
+    turt.speed(0)
+    turt.shape("circle")
+    turt.color(generate_color())
+    turt.setheading(random.randint(0, 360))
+    return turt
 
 
 screen = Screen()
@@ -80,12 +85,13 @@ t = Turtle()
 t.speed(0)
 t.shape("circle")
 t.color(generate_color())
+t.setheading(random.randint(0, 360))
 deltax = random.randint(-2, 2) #randomly selects how far right/left turtle will move
 deltay = random.randint(-2, 2) #randomly selects how far up/down turtle will move
 
 #t.setheading(random.randint(0, 360))
 
-#turtles = [t]
+turtles = [t]
 #t_count = 1
 #for i in range (t_count):
     #t = Turtle()
@@ -95,7 +101,9 @@ deltay = random.randint(-2, 2) #randomly selects how far up/down turtle will mov
     #turtles.append(t)
 alive = True
 while alive:
-    deltax, deltay = move_with_deltas(t, deltax, deltay)
+    for i in turtles:
+        turtles = move_with_heading(i, turtles)
+    #deltax, deltay = move_with_deltas(t, deltax, deltay)
 
 
 
